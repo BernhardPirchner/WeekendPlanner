@@ -31,6 +31,8 @@
                     time: this.eventDate 
                 }
                 this.data=JSON.stringify(event)
+
+                
                 await axios.post("https://localhost:7002/api/event", {
                     name: this.eventName,
                     desc: this.eventDesc,
@@ -51,7 +53,7 @@
                 this.data=null
             },
             home(){
-                window.open("../../index.html")
+                window.open("../../index.html", "_self")
             }
         }
     }

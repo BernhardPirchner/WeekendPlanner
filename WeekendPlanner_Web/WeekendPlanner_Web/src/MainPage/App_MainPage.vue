@@ -4,8 +4,8 @@
     <eventModule/>
 
 
-    <button @click="addEvent">Add Event</button>
-
+    <button @click="open('addEvent.html')">Add Event</button>
+    <button @click="open('login.html')">Login</button>
 
 
 
@@ -14,8 +14,8 @@
 <script>
     export default{
         methods:{
-            addEvent(){
-                window.open("../../addEvent.html")
+            open(link){
+                window.open('../../'+link, "_self")
             }
         }
     }
