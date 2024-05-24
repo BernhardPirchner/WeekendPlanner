@@ -18,9 +18,6 @@ export default{
         async fetchData(){
             this.data=await axios.get("https://localhost:7002/api/event");
             console.log(data);
-        },
-        async fetchTest(){
-            this.data=await axios.get("https://random-data-api.com/api/v2/users")
         }
     }
 };

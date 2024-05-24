@@ -4,7 +4,7 @@
     <eventModule/>
 
 
-    <button >Add Event</button>
+    <button @click="addEvent">Add Event</button>
 
 
 
@@ -14,7 +14,9 @@
 <script>
     export default{
         methods:{
-            
+            addEvent(){
+                window.open("../../addEvent.html")
+            }
         }
     }
 
