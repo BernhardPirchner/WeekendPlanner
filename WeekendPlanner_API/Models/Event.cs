@@ -16,7 +16,7 @@ namespace WeekendPlanner_API.Models
         [JsonPropertyName("name")]
         public string? Name { get; set; } = null!;
 
-        [JsonPropertyName("description")]
+        [JsonPropertyName("desc")]
         public string? Description { get; set; } = null!;
         
         //pictures

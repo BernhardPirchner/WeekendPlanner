@@ -19,13 +19,13 @@ namespace WeekendPlanner_API.Controllers
         [HttpGet]
         public async Task<List<User>> Get()
         {
-            return await userService.GetAsync();
+            return await userService.GetUserAsync();
         }
 
         [HttpPost]
         public async Task<IActionResult> Post(User newUser)
         {
-            await userService.CreateAsync(newUser);
+            await userService.CreateUserAsync(newUser);
             return CreatedAtAction(nameof(Get), new {id=newUser.UserId}, newUser);
         }
     }

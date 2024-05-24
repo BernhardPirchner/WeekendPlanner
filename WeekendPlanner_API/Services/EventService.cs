@@ -14,5 +14,15 @@ namespace WeekendPlanner_API.Services
             var mongoDatabase=mongoClient.GetDatabase(settings.Value.DatabaseName);
             eventCollection=mongoDatabase.GetCollection<Event>(settings.Value.EventCollectionName);
         }
+
+        public async Task<List<Event>> GetEventsAsync()
+        {
+            return await eventCollection.Find(_=>true).ToListAsync();
+        }
+
+        public async Task CreateEventAsync(Event newEvent)
+        {
+            await eventCollection.InsertOneAsync(newEvent);
+        }
     }
 }

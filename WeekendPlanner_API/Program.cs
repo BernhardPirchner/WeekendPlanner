@@ -23,6 +23,16 @@ namespace WeekendPlanner_API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:5173", "https://localhost:7002")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    });
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -33,7 +43,14 @@ namespace WeekendPlanner_API
             }
 
             app.UseHttpsRedirection();
-
+            /*app.UseCors(builder=>
+            {
+                builder
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin();
+            });*/
+            app.UseCors();
             app.UseAuthorization();
 
 

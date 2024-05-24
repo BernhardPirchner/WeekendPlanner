@@ -20,12 +20,12 @@ namespace WeekendPlanner_API.Services
                 settings.Value.UserCollectionName );
         }
 
-        public async Task<List<User>> GetAsync()
+        public async Task<List<User>> GetUserAsync()
         {
             return await userCollection.Find(_=>true).ToListAsync();
         }
 
-        public async Task CreateAsync(User newUser)
+        public async Task CreateUserAsync(User newUser)
         {
             await userCollection.InsertOneAsync(newUser);
         }
