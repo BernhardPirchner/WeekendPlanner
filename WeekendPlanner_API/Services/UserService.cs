@@ -51,8 +51,6 @@ namespace WeekendPlanner_API.Services
             {
                 return null;
             }
-
-
         }
 
         public async Task CreateAsync(User newUser)

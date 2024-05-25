@@ -18,6 +18,10 @@ namespace WeekendPlanner_API
                 builder.Configuration.GetSection("EventDatabase"));
             builder.Services.AddSingleton<EventService>();
 
+            builder.Services.Configure<UserDatabaseSettings>(
+                builder.Configuration.GetSection("ProtoEventDatabase"));
+            builder.Services.AddSingleton<ProtoEventService>();
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
