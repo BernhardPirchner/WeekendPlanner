@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WeekendPlanner_API.Models;
 using WeekendPlanner_API.Services;
 
 namespace WeekendPlanner_API.Controllers
@@ -13,5 +14,19 @@ namespace WeekendPlanner_API.Controllers
         {
             this.eventService = eventService;
         }
+
+        [HttpGet("allEvents")]
+        public async Task<List<Event>> Get()
+        {
+            return await eventService.GetEventsAsync();
+        }
+
+        public async Task<IActionResult> Post(Event newEvent)
+        {
+            await eventService.CreateEvent(newEvent);
+            return CreatedAtAction(nameof(Get), new {id=newEvent.EventId}, newEvent);
+        }
+
+
     }
 }
