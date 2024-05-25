@@ -26,23 +26,23 @@ namespace WeekendPlanner_API.Services
             return await userCollection.Find(_=>true).ToListAsync();
         }
 
-        public async Task<bool> EmailExists(Credentials credentials) //für Registrierung
+        public async Task<bool> EmailExists(string email) //für Registrierung
         {
-            bool result = await userCollection.Find(user=>user.UserEmail==credentials.Email).AnyAsync();
+            bool result = await userCollection.Find(user=>user.UserEmail==email).AnyAsync();
             
             if(result)
             {
-                return false;
+                return true;
             }
             else
             {
-                return true;
+                return false;
             }
         }
 
-        public async Task<User> GetUser(Credentials credentials)
+        public async Task<User> GetUser(string email, string password)
         {
-            User tmp = await userCollection.FindAsync(user => ((user.UserEmail == credentials.Email) && (user.UserPassword==credentials.Password))).Result.FirstOrDefaultAsync();
+            User tmp = await userCollection.FindAsync(user => ((user.UserEmail == email) && (user.UserPassword==email))).Result.FirstOrDefaultAsync();
             if(tmp is User)
             {
                 return tmp;

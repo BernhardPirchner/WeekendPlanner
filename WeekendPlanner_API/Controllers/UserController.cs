@@ -24,15 +24,15 @@ namespace WeekendPlanner_API.Controllers
         }
 
         [HttpGet("checkUser")]
-        public async Task<bool> CheckEmailExisting(Credentials credentials)
+        public async Task<bool> CheckEmailExisting(string email)
         {
-            return await userService.EmailExists(credentials);
+            return await userService.EmailExists(email);
         }
 
         [HttpGet("login")]
-        public async Task<User> Login(Credentials credentials)
+        public async Task<User> Login(string email, string password)
         {
-            return await userService.GetUser(credentials);
+            return await userService.GetUser(email, password);
         }
 
 
