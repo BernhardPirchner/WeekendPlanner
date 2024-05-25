@@ -4,7 +4,7 @@
     <form @submit.prevent="addEvent">
         <p>Name: <input type="text" required v-model="eventName"></p>
         <p>Description: <input type="text" v-model="eventDesc" ></p>
-        <p>Date: <input type="date" required v-model="eventDate"></p>
+        <p>Date: <input type="date" pattern="yyyy-mm-dd" required v-model="eventDate"></p>
         <button type="submit">Add Event</button>
     </form>
     <button @click="home">return to Homepage</button>
@@ -33,7 +33,7 @@
                 this.data=JSON.stringify(event)
 
                 
-                await axios.post("https://localhost:7002/api/event", {
+                await axios.post("https://localhost:7002/api/protoEvent/createProtoEvent", {
                     name: this.eventName,
                     desc: this.eventDesc,
                     time: this.eventDate

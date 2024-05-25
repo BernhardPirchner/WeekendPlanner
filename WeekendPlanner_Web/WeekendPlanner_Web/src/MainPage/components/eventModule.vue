@@ -1,5 +1,7 @@
 <template>
-    <button v-on:click="fetchData">Load Data</button>
+    <div @load.once="fetchData">
+        <button @click="fetchData">Load Data</button>
+    </div>
     <div v-if="data" class="wrapper">
         <eventItem v-for="x in data.data" v-bind:key=x.eventId :name=x.name :desc=x.desc :time=x.time />
     </div>
@@ -14,10 +16,12 @@ export default{
             data: null,
         };
     },
+    mounted(){
+        this.fetchData()
+    },
     methods:{
         async fetchData(){
-            this.data=await axios.get("https://localhost:7002/api/event");
-            console.log(data);
+            this.data=await axios.get("https://localhost:7002/api/event/allEvents");
         }
     }
 };

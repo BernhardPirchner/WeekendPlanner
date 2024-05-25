@@ -23,16 +23,59 @@ namespace WeekendPlanner_API.Controllers
             return await userService.GetAsync();
         }
 
-        [HttpGet("checkUser")]
+        [HttpGet("oneUser")]
+        public async Task<IActionResult> GetOne()
+        {
+            var userId = HttpContext.Session.GetString("sessionId");
+            //Console.WriteLine(HttpContext.Session.GetString("sessionId"));
+            //Console.WriteLine(userId);
+            if (userId is not null)
+            {
+                return Ok(new { message = $"Hallo {userId}" });
+            }
+            else
+            {
+                return Unauthorized(new { message = "Unauthorized" });
+            }
+        }
+
+        [HttpGet("checkEmail")]
         public async Task<bool> CheckEmailExisting(string email)
         {
             return await userService.EmailExists(email);
         }
 
-        [HttpGet("login")]
-        public async Task<User> Login(string email, string password)
+        [HttpGet("isAdmin")]
+        public async Task<bool> IsAdmin()
         {
-            return await userService.GetUser(email, password);
+            var userId = HttpContext.Session.GetString("sessionId");
+            if (userId is not null) 
+            {
+                return userService.GetOneAsync(userId).Result.IsAdmin;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(Credentials credentials)
+        {
+            User tmp= await userService.Login(credentials);
+
+
+            if(tmp is not null)
+            {
+                Console.WriteLine(tmp.UserId);
+                HttpContext.Session.SetString("sessionId", tmp.UserId);
+                Console.WriteLine(HttpContext.Session.GetString("sessionId"));
+                return Ok(new {message="Logged in successfully"});
+            }
+            else
+            {
+                return Unauthorized(new { message = "Invalid credentials" });
+            }
         }
 
 

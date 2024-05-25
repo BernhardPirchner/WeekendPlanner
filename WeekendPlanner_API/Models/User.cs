@@ -27,7 +27,7 @@ namespace WeekendPlanner_API.Models
         public string UserPassword { get; set; } = null!;
 
         [JsonPropertyName("admin")]
-        public bool isAdmin { get; set; } = false;
+        public bool IsAdmin { get; set; } = false;
 
         //saved events
     }

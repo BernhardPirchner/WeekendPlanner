@@ -1,7 +1,11 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using WeekendPlanner_API.Models;
+using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 
 namespace WeekendPlanner_API.Services
 {
@@ -26,6 +30,11 @@ namespace WeekendPlanner_API.Services
             return await userCollection.Find(_=>true).ToListAsync();
         }
 
+        public async Task<User> GetOneAsync(string id)
+        {
+            return await userCollection.FindAsync(user=>user.UserId== id).Result.FirstAsync();
+        }
+
         public async Task<bool> EmailExists(string email) //für Registrierung
         {
             bool result = await userCollection.Find(user=>user.UserEmail==email).AnyAsync();
@@ -40,17 +49,9 @@ namespace WeekendPlanner_API.Services
             }
         }
 
-        public async Task<User> GetUser(string email, string password)
+        public async Task<User> Login(Credentials credentials)
         {
-            User tmp = await userCollection.FindAsync(user => ((user.UserEmail == email) && (user.UserPassword==email))).Result.FirstOrDefaultAsync();
-            if(tmp is User)
-            {
-                return tmp;
-            }
-            else
-            {
-                return null;
-            }
+            return await userCollection.FindAsync(user => ((user.UserEmail == credentials.Email) && (user.UserPassword==credentials.Password))).Result.FirstOrDefaultAsync();
         }
 
         public async Task CreateAsync(User newUser)

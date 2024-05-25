@@ -21,12 +21,11 @@ namespace WeekendPlanner_API.Controllers
             return await eventService.GetEventsAsync();
         }
 
+        [HttpPost("createEvent")]
         public async Task<IActionResult> Post(Event newEvent)
         {
             await eventService.CreateEvent(newEvent);
             return CreatedAtAction(nameof(Get), new {id=newEvent.EventId}, newEvent);
         }
-
-
     }
 }

@@ -37,7 +37,11 @@ namespace WeekendPlanner_API.Services
 
         public async Task updateProtoEvent(string protoEventId, Event newProtoEvent)
         {
-            await protoEventCollection.FindOneAndReplaceAsync(e => e.EventId == protoEventId, newProtoEvent);
+            var filter = Builders<Event>.Filter.Eq(e => e.EventId, protoEventId);
+            var update = Builders<Event>.Update.Set(e => e.Name, newProtoEvent.Name)
+                                               .Set(e => e.Description, newProtoEvent.Description)
+                                               .Set(e=> e.Time, newProtoEvent.Time);
+            await protoEventCollection.UpdateOneAsync(filter, update);
         }
     }
 }
