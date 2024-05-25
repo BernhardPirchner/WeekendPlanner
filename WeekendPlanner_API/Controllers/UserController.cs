@@ -36,7 +36,6 @@ namespace WeekendPlanner_API.Controllers
         }
 
 
-
         [HttpPost("createUser")]
         public async Task<IActionResult> Post(User newUser)
         {
