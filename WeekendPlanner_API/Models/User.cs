@@ -10,14 +10,24 @@ namespace WeekendPlanner_API.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string? UserId { get; set; }
 
-        [JsonPropertyName("name")]
+        [JsonPropertyName("firstname")]
+        public string FirstName { get; set; } = null!;
+
+        [JsonPropertyName("lastname")]
+        public string LastName { get; set; } = null!;
+
+        [JsonPropertyName("username")]
         public string UserName { get; set; } = null!;
 
+        [BsonElement("email")]
         [JsonPropertyName("email")]
         public string UserEmail { get; set; } = null!;
 
         [JsonPropertyName("password")]
         public string UserPassword { get; set; } = null!;
+
+        [JsonPropertyName("admin")]
+        public bool isAdmin { get; set; } = false;
 
         //saved events
     }
