@@ -18,15 +18,26 @@ namespace WeekendPlanner_API.Controllers
         [HttpGet("allEvents")]
         public async Task<List<Event>> Get()
         {
-            return await eventService.GetEventsAsync();
+            return await eventService.GetAllAsync();
         }
 
+        [HttpGet("oneEvent")]
+        public async Task<Event> GetOne(string id)
+        {
+            return await eventService.GetOneAsync(id);
+        }
+
+        [HttpGet("someEvents")]
+        public async Task<List<Event>> GetSome([FromQuery]string[] eventIds)
+        {
+            return await eventService.GetSomeAsync(eventIds);
+        }
+
+        [HttpPost("createEvent")]
         public async Task<IActionResult> Post(Event newEvent)
         {
             await eventService.CreateEvent(newEvent);
             return CreatedAtAction(nameof(Get), new {id=newEvent.EventId}, newEvent);
         }
-
-
     }
 }
