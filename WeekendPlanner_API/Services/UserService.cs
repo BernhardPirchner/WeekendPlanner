@@ -63,24 +63,29 @@ namespace WeekendPlanner_API.Services
         {
             User tmp= await userCollection.FindAsync(user => user.UserId==userId).Result.FirstOrDefaultAsync();
             tmp.MyEvents.Add(eventId);
+            await UpdateUser(userId, tmp);
+            await AddSavedEvent(userId, eventId);
         }
 
         public async Task AddSavedEvent(string userId, string eventId)
         {
             User tmp = await userCollection.FindAsync(user => user.UserId == userId).Result.FirstOrDefaultAsync();
             tmp.SavedEvents.Add(eventId);
+            await UpdateUser(userId, tmp);
         }
 
         public async Task RemoveMyEvent(string userId, string eventId)
         {
             User tmp = await userCollection.FindAsync(user => user.UserId == userId).Result.FirstOrDefaultAsync();
             tmp.MyEvents.Remove(eventId);
+            await UpdateUser(userId, tmp);
         }
 
         public async Task RemoveSavedEvent(string userId, string eventId)
         {
             User tmp = await userCollection.FindAsync(user => user.UserId == userId).Result.FirstOrDefaultAsync();
             tmp.SavedEvents.Remove(eventId);
+            await UpdateUser(userId, tmp);
         }
 
         public async Task<List<string>> GetMyEvents(string userId)
@@ -102,7 +107,9 @@ namespace WeekendPlanner_API.Services
                                             .Set(user => user.Email, newUser.Email)
                                             .Set(user => user.Password, newUser.Password)
                                             .Set(user => user.FirstName, newUser.FirstName)
-                                            .Set(user => user.LastName, newUser.LastName);
+                                            .Set(user => user.LastName, newUser.LastName)
+                                            .Set(user=> user.MyEvents, newUser.MyEvents)
+                                            .Set(user=> user.SavedEvents, newUser.SavedEvents);
 
             await userCollection.UpdateOneAsync(filter, update);
         }

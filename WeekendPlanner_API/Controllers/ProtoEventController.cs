@@ -11,6 +11,7 @@ namespace WeekendPlanner_API.Controllers
     public class ProtoEventController : Controller
     {
         private readonly ProtoEventService protoEventService;
+        private const string sessionId = "sessionId";
 
         public ProtoEventController(ProtoEventService protoEventService)
         {
@@ -33,8 +34,8 @@ namespace WeekendPlanner_API.Controllers
         public async Task<IActionResult> createProtoEvent(Event newProtoEvent)
         {
             //Console.WriteLine(newProtoEvent.Time);
-            var userId = HttpContext.Session.GetString("sessionId");
-            Console.WriteLine(HttpContext.Session.GetString("sessionId"));
+            var userId = HttpContext.Session.GetString(sessionId);
+            Console.WriteLine(HttpContext.Session.GetString(sessionId));
             Console.WriteLine(userId);
             if (userId is not null)
             {
@@ -54,7 +55,7 @@ namespace WeekendPlanner_API.Controllers
         [HttpPut("updateProtoEvent")]
         public async Task<IActionResult> Put(string id, Event newProtoEvent)
         {
-            var userId = HttpContext.Session.GetString("sessiodId");
+            var userId = HttpContext.Session.GetString(sessionId);
             if (userId is not null) 
             {
                 await protoEventService.updateProtoEvent(id, newProtoEvent);
@@ -70,7 +71,7 @@ namespace WeekendPlanner_API.Controllers
         [HttpDelete("deleteProtoEvent")]
         public async Task<IActionResult> Delete(string id)
         {
-            var userId = HttpContext.Session.GetString("sessionId");
+            var userId = HttpContext.Session.GetString(sessionId);
 
             if (userId is not null) 
             {

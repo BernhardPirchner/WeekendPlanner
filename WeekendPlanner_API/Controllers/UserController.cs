@@ -120,8 +120,10 @@ namespace WeekendPlanner_API.Controllers
         public async Task<IActionResult> AddMyEvent(string eventId)
         {
             var userId = HttpContext.Session.GetString(sessionId);
+
             if(userId is not null)
             {
+                Console.WriteLine("Hallo");
                 await userService.AddMyEvent(userId, eventId);
                 return Ok(new { message = "Authorized" });
             }

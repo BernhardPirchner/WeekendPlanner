@@ -1,10 +1,13 @@
-<template>
-    <div v-if="data && all" class="wrapper">
-        <eventItem v-for="x in data.data" v-bind:key=x.eventId :id=x.eventId :name=x.name :desc=x.description :start=localTime(x.start) :end="localTime(x.end)" :location="x.loc" @clicked="selectEvent"/>
+<template class="body">
+    <div v-if="!data">
+        <h1>Error: Service could not be reached</h1>
+    </div>
+    <div v-if="data && all" class="container">
+        <eventItem v-for="x in data.data" v-bind:key=x.eventId :displayAll="true" :id=x.eventId :name=x.name :description=x.description :start=localTime(x.start) :end="localTime(x.end)" :location="x.location" @clicked="selectEvent"/>
     </div>
     <div v-if="!all">
         <button @click="back">Back</button>
-        <eventItem :id="item.eventId" :name="item.name" :description="item.desc" :start="localTime(item.start)" :end="localTime(item.end)" :location="item.loc" />
+        <eventItem :displayAll="false" :id="item.eventId" :name="item.name" :description="item.description" :start="localTime(item.start)" :end="localTime(item.end)" :location="item.location" />
     </div>
 
 </template>
@@ -17,7 +20,7 @@ export default{
         return{
             data: null,
             all: true,
-            item: null
+            item: null,
         };
     },
     mounted(){
@@ -56,16 +59,27 @@ export default{
 </script>
 
 <style>
-.wrapper{
+.container{
     display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    align-content: center;
     flex-wrap: wrap;
+    margin: 3%
 }
 
-.wrapper > div{
-    border: 3px solid blue;
-    flex-basis: 120px;
-    margin: 5%;
-    padding: 5%;
-    background-color: aliceblue;
+.container > div{
+    margin: 0.8rem;
+    padding: 0.5rem;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.container>div:hover{
+    
+    transform: scale(1.2);
+}
+
+.body{
+    background-color: rgb(137, 43, 226);
 }
 </style>

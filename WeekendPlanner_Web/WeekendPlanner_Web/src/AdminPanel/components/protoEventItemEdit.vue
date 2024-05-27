@@ -48,6 +48,7 @@ export default{
                 end:this.newEnd,
                 location:this.newLocation
                 },{
+                    withCredentials:true,
                     params:{
                         id: this.id,
                     }

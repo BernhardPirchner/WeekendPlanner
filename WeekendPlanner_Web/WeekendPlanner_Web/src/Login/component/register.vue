@@ -1,14 +1,17 @@
 <template>
-    <h2>Register:</h2>
-    <form v-if="!check" @submit.prevent="addUser">
-        <p>Firstname: <input type="text" required v-model="userFirstname"></input></p>
-        <p>Lastname: <input type="text" required v-model="userLastname"></input></p>
-        <p>Username: <input type="text" required v-model="userUserName"></input></p>
-        <p>E-Mail: <input type="email" required v-model="userEmail"></input></p>
-        <p>Password: <input type="password" required v-model="userPassword"></p>
-        <button type="submit">registrieren</button>
-    </form>
-    <p v-if="check">Ein Account mit dieser Email existiert bereits!</p>
+    <div>
+        <h2>Register:</h2>
+        <form v-if="!check" @submit.prevent="addUser">
+            <p>Firstname: <input type="text" required v-model="userFirstname"></input></p>
+            <p>Lastname: <input type="text" required v-model="userLastname"></input></p>
+            <p>Username: <input type="text" required v-model="userUserName"></input></p>
+            <p>E-Mail: <input type="email" required v-model="userEmail"></input></p>
+            <p>Password: <input type="password" required v-model="userPassword"></p>
+            <button type="submit">registrieren</button>
+        </form>
+        <button @click="change">Already have an Account?</button>
+        <p v-if="check">Ein Account mit dieser Email existiert bereits!</p>
+    </div>
 </template>
 
 <script>
@@ -42,6 +45,7 @@ export default{
             })
             .then(function(response){
                 console.log(response)
+                this.$emit('registered')
             })
             .catch(function(error){
                 console.log(error)
@@ -59,11 +63,25 @@ export default{
             this.userUserName=null
             this.userEmail=null
             this.userPassword=null
+        },
+        change(){
+            this.$emit("changeComponent")
         }
     }
 }
 </script>
 
 <style>
-
+    .container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        align-content: center;
+        border: 3px solid rgb(160, 92, 249);
+        border-radius: 15%;
+        background-color: rgba(106, 54, 236, 0.325);
+        margin-left: 20%;
+        margin-right: 20%;
+        padding-bottom: 5%;
+    }
 </style>

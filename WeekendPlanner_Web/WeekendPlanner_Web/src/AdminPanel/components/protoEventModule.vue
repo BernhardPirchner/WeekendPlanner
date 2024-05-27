@@ -5,7 +5,7 @@
 
     <div v-if="editing">
         <p>Currently Editing</p>
-        <protoEventItemEdit :id=eItem.eventId :name=eItem.name :desc=eItem.description :start=localTime(eItem.start) :end="localTime(eItem.end)" location:eItem.location @finished="editFinished" />
+        <protoEventItemEdit :id=eItem.eventId :name=eItem.name :description=eItem.description :start=localTime(eItem.start) :end="localTime(eItem.end)" :location=eItem.location @finished="editFinished" />
     </div>
 </template>
 
@@ -45,8 +45,7 @@ export default{
         async deleteItem(id){
             try{
                 const response=await axios.delete("https://localhost:7002/api/protoEvent/deleteProtoEvent",{
-                    withCredentials:true
-                } ,{
+                withCredentials:true,
                 params:{
                     id:id
                 }})

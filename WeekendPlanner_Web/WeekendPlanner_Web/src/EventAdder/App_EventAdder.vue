@@ -43,6 +43,14 @@
                         withCredentials:true
                     })
                     console.log(response)
+                    const response2=await axios.post('https://localhost:7002/api/user/addMyEvent',null,{
+                        params:{
+                            eventId:response.data.eventId
+                        },
+                        withCredentials:true
+                    })
+
+                    console.log(response2)
                 }catch(error){
                     console.log(error)
                 }
@@ -55,7 +63,7 @@
                 this.eventDescription=null
                 this.eventStart=null
                 this.eventEnd=null
-                this.location=null
+                this.evetnLocation=null
                 this.data=null
             },
             home(){

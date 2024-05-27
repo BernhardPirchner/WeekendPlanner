@@ -1,24 +1,14 @@
 <template>
-    <h1>Login</h1>
-    <div v-if="!data">
-        <button @click="option('register')">registrieren</button>
-        <button @click="option('login')">anmelden</button>
-    </div>
-    <button @click="back" v-if="data">Back</button>
-    <div v-if="data">
-        <registryModule v-if="data==='register'"/>
-        <loginModule v-else-if="data==='login'"/>
-    </div>
-
-
     <button @click="home">return to Homepage</button>
+    <registryComponent v-if="!hasAccount" @changeComponent="change" @registered="finish" class="container"/>
+    <loginComponent v-else @changeComponent="change" @loggedIn="finish" class="container"/>
 </template>
 
 <script>
     export default{
         data(){
             return {
-                data: null
+                hasAccount:true 
             }
         },
         methods:{
@@ -30,6 +20,13 @@
             },
             back(){
                 this.data=null;
+            },
+            finish(){
+                console.log("Hello")
+                this.home()
+            },
+            change(){
+                this.hasAccount=!this.hasAccount
             }
         }
     }

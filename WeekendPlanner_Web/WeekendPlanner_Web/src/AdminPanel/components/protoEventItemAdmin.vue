@@ -26,7 +26,7 @@
             edit(){
                 this.$emit("edit", this.id)
             },
-            delete(){
+            del(){
                 this.$emit("delete", this.id)
             },
             publish(){
