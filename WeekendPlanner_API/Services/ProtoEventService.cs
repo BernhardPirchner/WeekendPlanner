@@ -40,7 +40,9 @@ namespace WeekendPlanner_API.Services
             var filter = Builders<Event>.Filter.Eq(e => e.EventId, protoEventId);
             var update = Builders<Event>.Update.Set(e => e.Name, newProtoEvent.Name)
                                                .Set(e => e.Description, newProtoEvent.Description)
-                                               .Set(e=> e.Time, newProtoEvent.Time);
+                                               .Set(e => e.Start, newProtoEvent.Start)
+                                               .Set(e => e.End, newProtoEvent.End)
+                                               .Set(e => e.Location, newProtoEvent.Location);
             await protoEventCollection.UpdateOneAsync(filter, update);
         }
     }

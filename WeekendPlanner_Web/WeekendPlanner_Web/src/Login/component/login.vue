@@ -30,10 +30,9 @@
                     })
                 this.message=response.data.message
                 }catch(error){
+                    console.log(error)
                     this.message=error.response.data.message
                 }
-                console.log(Credential.toString)
-                console.log(CredentialsContainer.toString)
                 this.reset()
             },
             reset(){

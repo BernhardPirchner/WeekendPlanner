@@ -1,11 +1,11 @@
 <template>
-    <div v-if="data" class="wrapper">
-        <protoEventItem v-for="x in data.data" v-bind:key=x.eventId :id=x.eventId :name=x.name :desc=x.desc :time=x.time @edit="editItem" @delete="receiveEmit"/>
+    <div v-if="data&&!editing" class="wrapper">
+        <protoEventItem v-for="x in data.data" :ref="'childComponent' + x.eventId" v-bind:key=x.eventId :id=x.eventId :name=x.name :description=x.description :start=localTime(x.start) :end="localTime(x.end)" location:x.location @edit="editItem" @delete="deleteItem" @publish="publishItem"/>
     </div>
 
     <div v-if="editing">
         <p>Currently Editing</p>
-        <protoEventItemEdit  :id=eItem.eventId :name=eItem.name :desc=eItem.desc :time=eItem.time />
+        <protoEventItemEdit :id=eItem.eventId :name=eItem.name :desc=eItem.description :start=localTime(eItem.start) :end="localTime(eItem.end)" location:eItem.location @finished="editFinished" />
     </div>
 </template>
 
@@ -14,11 +14,12 @@ import axios from 'axios'
 
 export default{
     data(){
-        return{
+        return{ 
             data: null,
             editing: false,
-            eItem: null
-        };
+            eItem: null,
+            selectedChild: null
+        }
     },
     mounted(){
         this.fetchData()
@@ -31,7 +32,7 @@ export default{
             alert("received by "+id)
         },
         async editItem(id){
-            console.log(id)
+            this.selectedChild=id
             const response= await axios.get("https://localhost:7002/api/protoEvent/oneProtoEvent", {
                 params:{
                     id: id
@@ -40,6 +41,39 @@ export default{
             console.log(response.data)
             this.eItem=response.data
             this.editing=true
+        },
+        async deleteItem(id){
+            try{
+                const response=await axios.delete("https://localhost:7002/api/protoEvent/deleteProtoEvent",{
+                    withCredentials:true
+                } ,{
+                params:{
+                    id:id
+                }})
+                console.log(response.data.message)
+                location.reload()
+            }catch(error){
+                console.log(error)
+            }
+        },
+        editFinished(){
+            this.editing=false
+            location.reload()
+        },
+        localTime(time){
+            const utc=new Date(time)
+            const local=new Date(utc.getTime()-utc.getTimezoneOffset()*60000)
+            return local.toISOString()
+        },
+        async publishItem(id){
+            const response= await axios.get("https://localhost:7002/api/protoEvent/oneProtoEvent",{
+                params:{
+                    id:id
+                }
+            })
+
+            axios.post("https://localhost:7002/api/event/createEvent", response.data)
+            this.deleteItem(id)
         }
     }
 };

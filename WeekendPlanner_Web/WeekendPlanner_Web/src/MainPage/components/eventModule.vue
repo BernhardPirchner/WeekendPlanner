@@ -1,10 +1,12 @@
 <template>
-    <div @load.once="fetchData">
-        <button @click="fetchData">Load Data</button>
+    <div v-if="data && all" class="wrapper">
+        <eventItem v-for="x in data.data" v-bind:key=x.eventId :id=x.eventId :name=x.name :desc=x.description :start=localTime(x.start) :end="localTime(x.end)" :location="x.loc" @clicked="selectEvent"/>
     </div>
-    <div v-if="data" class="wrapper">
-        <eventItem v-for="x in data.data" v-bind:key=x.eventId :name=x.name :desc=x.desc :time=x.time />
+    <div v-if="!all">
+        <button @click="back">Back</button>
+        <eventItem :id="item.eventId" :name="item.name" :description="item.desc" :start="localTime(item.start)" :end="localTime(item.end)" :location="item.loc" />
     </div>
+
 </template>
 
 <script>
@@ -14,6 +16,8 @@ export default{
     data(){
         return{
             data: null,
+            all: true,
+            item: null
         };
     },
     mounted(){
@@ -22,8 +26,32 @@ export default{
     methods:{
         async fetchData(){
             this.data=await axios.get("https://localhost:7002/api/event/allEvents");
+        },
+        localTime(time){
+        const utc=new Date(time)
+        const local=new Date(utc.getTime()-utc.getTimezoneOffset()*60000)
+        return local.toISOString()
+        },
+        async selectEvent(id){
+            console.log(id)
+            try{
+                const response=await axios.get("https://localhost:7002/api/event/oneEvent", {
+                    params:{
+                        id:id
+                    }
+                })
+                this.all=false
+                this.item=response.data
+                console.log(response)
+            }catch(error){
+                console.log(error)
+            }
+        },
+        back(){
+            this.all=true
+            this.item=null
         }
-    }
+    },
 };
 </script>
 

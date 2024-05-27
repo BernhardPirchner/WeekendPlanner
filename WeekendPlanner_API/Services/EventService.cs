@@ -20,8 +20,14 @@ namespace WeekendPlanner_API.Services
             return await eventCollection.Find(_=>true).ToListAsync();
         }
 
+        public async Task<Event> GetOneAsync(string id)
+        {
+            return await eventCollection.FindAsync(e=>e.EventId== id).Result.FirstOrDefaultAsync();
+        }
+
         public async Task CreateEvent(Event newEvent)
         {
+
             await eventCollection.InsertOneAsync(newEvent);
         }
     }

@@ -1,14 +1,29 @@
 <template>
-    <header>
-        <button @click="open('admin.html')">change to admin panel</button>
+    <header v-if="admin">
+        <div>
+            <h1>WeekendPlanner</h1>
+            <input type="search">
+            <button @click="open('admin.html')">change to admin panel</button>
+        </div>
     </header>
-    <h1>WeekendPlanner</h1>
+    <header v-else-if="user">
+        <div>
+            <h1>WeekendPlanner</h1>
+            <input type="search">
+            <p>Profile Placeholder</p>
+        </div>
+    </header>
+    <header v-else>
+        <h1>WeekendPlanner</h1>
+        <input type="search">
+        <button @click="open('login.html')">Login</button>
+    </header>
+
     <h2>Event Modul:</h2>
     <eventModule/>
 
 
     <button @click="open('addEvent.html')">Add Event</button>
-    <button @click="open('login.html')">Login</button>
     <button @click="fetchProfile">Check Admin</button>
     <p v-if="message">{{ message }}</p>
     <p v-if="admin">Admin</p>
@@ -24,12 +39,12 @@ import axios from 'axios';
         data(){
             return {
                 message: null,
-                admin: null
+                user:false,
+                admin: false
             }
         },
         mounted(){
-            this.admin=this.isAdmin()
-            console.log(this.admin)
+            this.fetchProfile()
         },
         methods:{
             open(link){
@@ -40,11 +55,11 @@ import axios from 'axios';
                     const response =await axios.get("https://localhost:7002/api/user/oneUser", {
                     withCredentials: true
                     })
-                    console.log(response)
-                    this.message=response.data.message
+                    this.user=response.data
+                    this.isAdmin()
                 }catch(error){
                     console.log(error)
-                    this.message=error.response.data.message
+                    this.user= false
                 }
             },
             async isAdmin(){
@@ -52,6 +67,9 @@ import axios from 'axios';
                     withCredentials: true
                 })
                 this.admin=response.data
+            },
+            test(text){
+                console.log(text)
             }
         }
     }
