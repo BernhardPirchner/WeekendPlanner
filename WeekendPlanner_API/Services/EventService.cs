@@ -15,7 +15,7 @@ namespace WeekendPlanner_API.Services
             eventCollection=mongoDatabase.GetCollection<Event>(settings.Value.EventCollectionName);
         }
 
-        public async Task<List<Event>> GetEventsAsync()
+        public async Task<List<Event>> GetAllAsync()
         {
             return await eventCollection.Find(_=>true).ToListAsync();
         }
@@ -23,6 +23,17 @@ namespace WeekendPlanner_API.Services
         public async Task<Event> GetOneAsync(string id)
         {
             return await eventCollection.FindAsync(e=>e.EventId== id).Result.FirstOrDefaultAsync();
+        }
+
+        public async Task<List<Event>> GetSomeAsync(string[] eventIds)
+        {
+            var filter = Builders<Event>.Filter.In(e => e.EventId, eventIds);
+            List<Event> tmp= await eventCollection.Find(filter).ToListAsync();
+            foreach (Event e in tmp)
+            {
+                Console.WriteLine(e.ToString());
+            }
+            return tmp;
         }
 
         public async Task CreateEvent(Event newEvent)

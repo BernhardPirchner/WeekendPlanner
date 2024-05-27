@@ -21,7 +21,7 @@ namespace WeekendPlanner_API.Controllers
         [HttpGet("allProtoEvents")]
         public async Task<List<Event>> Get()
         {
-            return await protoEventService.GetAsync();
+            return await protoEventService.GetAllAsync();
         }
 
         [HttpGet("oneProtoEvent")]

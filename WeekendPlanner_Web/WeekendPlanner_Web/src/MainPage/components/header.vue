@@ -3,14 +3,20 @@
         <div class="headerContainer">
             <h1>WeekendPlanner</h1>
             <input type="search">
-            <button @click="open('admin.html')">change to admin panel</button>
+            <div>
+                <button @click="open('addEvent.html')">+</button>
+                <button @click="open('admin.html')">Admin</button>
+            </div>
         </div>
     </header>
     <header v-else-if="isUser">
         <div class="headerContainer">
             <h1>WeekendPlanner</h1>
             <input type="search">
-            <p>Profile Placeholder</p>
+            <div>
+                <button @click="open('addEvent.html')">+</button>
+                <button @click="">Profile</button>
+            </div>
         </div>
     </header>
     <header v-else>
@@ -49,6 +55,7 @@
                     })
                     this.isUser=response.data
                     this.checkAdmin()
+                    this.$emit("changeUserStatus", this.isUser)
                 }catch(error){
                     console.log(error)
                 }

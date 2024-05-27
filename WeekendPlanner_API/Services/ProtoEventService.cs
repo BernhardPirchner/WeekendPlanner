@@ -15,7 +15,7 @@ namespace WeekendPlanner_API.Services
             protoEventCollection = mongoDatabse.GetCollection<Event>(settings.Value.ProtoEventCollectionName);
         }
 
-        public async Task<List<Event>> GetAsync()
+        public async Task<List<Event>> GetAllAsync()
         {
             return await protoEventCollection.Find(_ => true).ToListAsync();
         }
@@ -24,6 +24,7 @@ namespace WeekendPlanner_API.Services
         {
             return await protoEventCollection.FindAsync(e=>e.EventId==id).Result.FirstOrDefaultAsync();
         }
+
 
         public async Task createProtoEvent(Event newProtoEvent)
         {

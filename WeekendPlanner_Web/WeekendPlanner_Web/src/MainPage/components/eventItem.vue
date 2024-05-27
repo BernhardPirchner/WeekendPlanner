@@ -1,11 +1,19 @@
 <template>
-    <div v-if="this.displayAll" @click="clicked" id="itemSmall" class="event">
-        <h3>{{ name }}</h3>
-        <p>{{ newStart }}</p>
-        <p>{{ location }}</p>
+    <div v-if="this.displayAll" id="itemSmall" class="event">
+        <div>
+            <button @click="alarm">Save</button>
+        </div>
+        <div  @click="clicked">
+            <h3>{{ name }}</h3>
+            <p>{{ newStart }}</p>
+            <p>{{ location }}</p>
+        </div>
     </div>
     <div v-else id="itemLarge" class="event">
-        <h1>{{ name }}</h1>
+        <div>
+            <h1>{{ name }}</h1>
+            <button>Save</button>
+        </div>
         <p>{{ description }}</p>
         <p>{{ newStart }} - {{ newEnd }}</p>
         <p>{{ location }}</p>
@@ -13,6 +21,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
     export default{
         props:{
             id:String,
@@ -21,7 +31,8 @@
             start:String,
             end:String,
             location:String,
-            displayAll:Boolean
+            displayAll:Boolean,
+            userStatus:Boolean
         },
         data(){
             return{
@@ -39,6 +50,9 @@
             convertTime(time){
                 const betterTime=new Date(time)
                 return betterTime.toLocaleString()
+            },
+            alarm(){
+                alert("Save")
             }
         }
     }

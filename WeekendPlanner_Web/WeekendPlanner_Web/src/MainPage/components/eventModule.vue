@@ -3,11 +3,11 @@
         <h1>Error: Service could not be reached</h1>
     </div>
     <div v-if="data && all" class="container">
-        <eventItem v-for="x in data.data" v-bind:key=x.eventId :displayAll="true" :id=x.eventId :name=x.name :description=x.description :start=localTime(x.start) :end="localTime(x.end)" :location="x.location" @clicked="selectEvent"/>
+        <eventItem v-for="x in data.data" v-bind:key=x.eventId :userStatus="this.user" :displayAll="true" :id=x.eventId :name=x.name :description=x.description :start=localTime(x.start) :end="localTime(x.end)" :location="x.location" @clicked="selectEvent"/>
     </div>
     <div v-if="!all">
         <button @click="back">Back</button>
-        <eventItem :displayAll="false" :id="item.eventId" :name="item.name" :description="item.description" :start="localTime(item.start)" :end="localTime(item.end)" :location="item.location" />
+        <eventItem :displayAll="false" :id="item.eventId" :userStatus="this.user" :name="item.name" :description="item.description" :start="localTime(item.start)" :end="localTime(item.end)" :location="item.location" />
     </div>
 
 </template>
@@ -16,19 +16,76 @@
 import axios from 'axios'
 
 export default{
+
+    props:{
+        type:Number,
+        user:Boolean
+    },
     data(){
         return{
             data: null,
             all: true,
             item: null,
-        };
+            type:this.type
+        }
+    },
+    computed:{
+
     },
     mounted(){
-        this.fetchData()
+        switch(this.type){
+            case 0: this.fetchAll(); break;
+            case 1: this.fetchSaved(); break;
+            case 2: this.fetchMy(); break
+            default: this.fetchAll(); break;
+        }
+
     },
     methods:{
-        async fetchData(){
-            this.data=await axios.get("https://localhost:7002/api/event/allEvents");
+        async fetchAll(){
+            try{
+                this.data=await axios.get("https://localhost:7002/api/event/allEvents");
+            }catch(error){
+                console.log(error)
+            }
+        },
+        async fetchSaved(){
+            try{
+                const response=await axios.get("https://localhost:7002/api/user/savedEvents", {
+                    withCredentials:true
+                })
+                console.log(response.data)
+                this.data=await axios.get("https://localhost:7002/api/event/someEvents", {
+                    params:{
+                        eventIds:response.data
+                    },
+                    paramsSerializer:{
+                        indexes:true
+                    }
+                })
+            }catch(error){
+                console.log(error)
+            }
+        },
+        async fetchMy(){
+            try{
+                const response=await axios.get("https://localhost:7002/api/user/MyEvents", {
+                    withCredentials:true
+                })
+                console.log(response.data)
+                const response2=await axios.get("https://localhost:7002/api/event/someEvents", {
+                    params:{
+                        eventIds:response.data
+                    },
+                    paramsSerializer:{
+                        indexes:true
+                    }
+                })
+                console.log(response2)
+                console.log(this.data)
+            }catch(error){
+                console.log(error)
+            }
         },
         localTime(time){
         const utc=new Date(time)
@@ -71,6 +128,7 @@ export default{
 .container > div{
     margin: 0.8rem;
     padding: 0.5rem;
+    cursor: pointer;
     transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
