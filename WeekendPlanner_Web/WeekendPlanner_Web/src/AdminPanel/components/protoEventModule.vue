@@ -85,10 +85,10 @@ export default{
 }
 
 .wrapper > div{
-    border: 3px solid blue;
+    border: 3px solid #D8BFD8;
     flex-basis: 120px;
     margin: 5%;
     padding: 5%;
-    background-color: aliceblue;
+    background-color: #98FF98;
 }
 </style>

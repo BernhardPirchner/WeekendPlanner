@@ -1,22 +1,26 @@
 <template>
     <div v-if="this.displayAll" id="itemSmall" class="event">
-        <div>
-            <button @click="alarm">Save</button>
+        <div v-if="this.userStatus">
+            <i v-if="!isSaved" @click="funcIsSaved" class="fi fi-rr-star"></i>
+            <i v-else @click="funcIsSaved" class="fi fi-sr-star"></i>
         </div>
         <div  @click="clicked">
             <h3>{{ name }}</h3>
             <p>{{ newStart }}</p>
-            <p>{{ location }}</p>
+            <p><i class="fi fi-rr-marker"></i> {{ location }}</p>
         </div>
     </div>
     <div v-else id="itemLarge" class="event">
         <div>
             <h1>{{ name }}</h1>
-            <button>Save</button>
+            <div v-if="this.userStatus">
+            <i v-if="!isSaved" @click="funcIsSaved" class="fi fi-rr-star"></i>
+            <i v-else @click="funcIsSaved" class="fi fi-sr-star"></i>
+        </div>
         </div>
         <p>{{ description }}</p>
         <p>{{ newStart }} - {{ newEnd }}</p>
-        <p>{{ location }}</p>
+        <p><i class="fi fi-rr-marker"></i> {{ location }}</p>
     </div>
 </template>
 
@@ -32,12 +36,14 @@ import axios from 'axios';
             end:String,
             location:String,
             displayAll:Boolean,
-            userStatus:Boolean
+            userStatus:Boolean,
+            saved:Boolean
         },
         data(){
             return{
                 newStart: this.convertTime(this.start),
-                newEnd: this.convertTime(this.end)
+                newEnd: this.convertTime(this.end),
+                isSaved:this.saved
             }
         },
         mounted(){
@@ -51,8 +57,30 @@ import axios from 'axios';
                 const betterTime=new Date(time)
                 return betterTime.toLocaleString()
             },
-            alarm(){
-                alert("Save")
+            async funcIsSaved(){
+                try{
+                    let response=null
+                    if (this.saved) {
+                        this.response=await axios.delete("https://localhost:7002/api/user/removeSavedEvent", {
+                            params:{
+                                eventId:this.id
+                            },
+                            withCredentials:true
+                        })
+                    } else {
+                        this.response=await axios.post("https://localhost:7002/api/user/addSavedEvent",null ,{
+                            params:{
+                                eventId:this.id
+                            },
+                            withCredentials:true
+                        })
+                    }
+                    this.isSaved=!this.isSaved
+                    console.log(response)
+                }catch(error){
+                    console.log(error)
+                }
+
             }
         }
     }
@@ -66,15 +94,15 @@ import axios from 'axios';
     }
 
     #itemSmall{
-        border: 3px solid rgb(160, 92, 249);
+        border: 3px solid #D8BFD8;
         border-radius: 15%;
-        background-color: rgba(106, 54, 236, 0.325);
+        background-color: #98FF98;
     }
 
     #itemLarge{
-        border: 3px solid rgb(160, 92, 249);
-        border-radius: 15%;
-        background-color: rgba(106, 54, 236, 0.325);
+        border: 3px solid #D8BFD8;
+        border-radius: 5%;
+        background-color: #98FF98;
         margin:3%;
         padding:5%;
     }

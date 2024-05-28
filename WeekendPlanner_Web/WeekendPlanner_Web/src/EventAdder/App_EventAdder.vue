@@ -1,4 +1,5 @@
 <template>
+    <i class="fi fi-rr-arrow-left" @click="home()"></i>
     <div class="container">
         <div class="item">
             <h1>Add an Event:</h1>
@@ -61,8 +62,6 @@
                 }catch(error){
                     console.log(error)
                 }
-
-
                 this.reset();
             },
             reset(){
@@ -86,9 +85,9 @@
         flex-direction: column;
         align-items: center;
         align-content: center;
-        border: 3px solid rgb(160, 92, 249);
+        border: 3px solid #D8BFD8;
         border-radius: 15%;
-        background-color: rgba(106, 54, 236, 0.325);
+        background-color: #98FF98 ;
         margin-left: 20%;
         margin-right: 20%;
         padding-bottom: 5%;

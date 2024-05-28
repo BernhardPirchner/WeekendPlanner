@@ -1,13 +1,13 @@
-<template class="body">
+<template class="body">    
     <div v-if="!data">
         <h1>Error: Service could not be reached</h1>
     </div>
     <div v-if="data && all" class="container">
-        <eventItem v-for="x in data.data" v-bind:key=x.eventId :userStatus="this.user" :displayAll="true" :id=x.eventId :name=x.name :description=x.description :start=localTime(x.start) :end="localTime(x.end)" :location="x.location" @clicked="selectEvent"/>
+        <eventItem v-for="x in data.data" v-bind:key=x.eventId :saved="x.saved" :userStatus="this.user" :displayAll="true" :id=x.eventId :name=x.name :description=x.description :start=localTime(x.start) :end="localTime(x.end)" :location="x.location" @clicked="selectEvent"/>
     </div>
     <div v-if="!all">
-        <button @click="back">Back</button>
-        <eventItem :displayAll="false" :id="item.eventId" :userStatus="this.user" :name="item.name" :description="item.description" :start="localTime(item.start)" :end="localTime(item.end)" :location="item.location" />
+        <button @click="back" class="button"><i class="fi fi-rr-arrow-left"></i></button>
+        <eventItem :displayAll="false" :id="item.eventId" :saved="item.saved" :userStatus="this.user" :name="item.name" :description="item.description" :start="localTime(item.start)" :end="localTime(item.end)" :location="item.location" />
     </div>
 
 </template>
@@ -26,7 +26,7 @@ export default{
             data: null,
             all: true,
             item: null,
-            type:this.type
+            type:this.type,
         }
     },
     computed:{
@@ -44,7 +44,21 @@ export default{
     methods:{
         async fetchAll(){
             try{
-                this.data=await axios.get("https://localhost:7002/api/event/allEvents");
+                const tempData= await axios.get("https://localhost:7002/api/user/savedEvents", {
+                    withCredentials:true
+                });
+                const tempData2=await axios.get("https://localhost:7002/api/event/allEvents");
+
+                console.log(tempData)
+                console.log(tempData2)
+                tempData2.data.forEach(element => {
+                    if (tempData.data.includes(element.eventId)) {
+                        element["saved"]=true
+                    } else {
+                        element["saved"]=false
+                    }
+                this.data=tempData2
+                });
             }catch(error){
                 console.log(error)
             }
@@ -55,7 +69,7 @@ export default{
                     withCredentials:true
                 })
                 console.log(response.data)
-                this.data=await axios.get("https://localhost:7002/api/event/someEvents", {
+                const response2=await axios.get("https://localhost:7002/api/event/someEvents", {
                     params:{
                         eventIds:response.data
                     },
@@ -63,6 +77,10 @@ export default{
                         indexes:true
                     }
                 })
+                response2.data.forEach(element => {
+                    element["saved"]=true
+                });
+                this.data=response2
             }catch(error){
                 console.log(error)
             }
@@ -112,10 +130,12 @@ export default{
             this.item=null
         }
     },
-};
+}
 </script>
 
 <style>
+
+
 .container{
     display: flex;
     flex-direction: row;
@@ -135,9 +155,5 @@ export default{
 .container>div:hover{
     
     transform: scale(1.2);
-}
-
-.body{
-    background-color: rgb(137, 43, 226);
 }
 </style>
