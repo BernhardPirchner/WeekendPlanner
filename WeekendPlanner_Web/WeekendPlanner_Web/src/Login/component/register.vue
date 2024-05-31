@@ -7,10 +7,10 @@
             <p>Username: <input type="text" required v-model="userUserName"></input></p>
             <p>E-Mail: <input type="email" required v-model="userEmail"></input></p>
             <p>Password: <input type="password" required v-model="userPassword"></p>
-            <button type="submit">registrieren</button>
+            <button type="submit" class="button">register</button>
         </form>
-        <button @click="change">Already have an Account?</button>
-        <p v-if="check">Ein Account mit dieser Email existiert bereits!</p>
+        <button @click="change" class="button">Already have an Account?</button>
+        <p v-if="check">An Account with this E-Mail already exists!</p>
     </div>
 </template>
 
@@ -35,27 +35,26 @@ export default{
                     email:this.userEmail
                 }
             })
-            if(!response.data){
-                await axios.post("https://localhost:7002/api/user/createUser", {
-                firstname: this.userFirstname,
-                lastname:this.userLastname,
-                username: this.userUserName,
-                email: this.userEmail,
-                password: this.userPassword
-            })
-            .then(function(response){
-                console.log(response)
-                this.$emit('registered')
-            })
-            .catch(function(error){
+            try{
+                if(!response.data){
+                    const response=await axios.post("https://localhost:7002/api/user/createUser", {
+                        firstname: this.userFirstname,
+                        lastname:this.userLastname,
+                        username: this.userUserName,
+                        email: this.userEmail,
+                        password: this.userPassword
+                    },{
+                        withCredentials:true
+                    })
+                    console.log(response)
+                    this.$emit('registered')
+                }else{
+                    this.check=true;
+                }
+            }catch(error){
                 console.log(error)
-            });
-
-            this.reset();
-
-            }else{
-                this.check=true;
             }
+            this.reset()
         },
         reset(){
             this.userFirstname=null
@@ -83,5 +82,9 @@ export default{
         margin-left: 20%;
         margin-right: 20%;
         padding-bottom: 5%;
+    }
+
+    .button{
+        background-color: #FFEB3B;
     }
 </style>

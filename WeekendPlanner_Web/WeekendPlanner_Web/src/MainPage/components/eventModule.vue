@@ -87,7 +87,7 @@ export default{
         },
         async fetchMy(){
             try{
-                const response=await axios.get("https://localhost:7002/api/user/MyEvents", {
+                const response=await axios.get("https://localhost:7002/api/user/myEvents", {
                     withCredentials:true
                 })
                 console.log(response.data)
@@ -101,6 +101,7 @@ export default{
                 })
                 console.log(response2)
                 console.log(this.data)
+                this.data=response2
             }catch(error){
                 console.log(error)
             }
@@ -134,26 +135,24 @@ export default{
 </script>
 
 <style>
+    .container{
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        align-content: center;
+        flex-wrap: wrap;
+        margin: 3%
+    }
 
+    .container > div{
+        margin: 0.8rem;
+        padding: 0.5rem;
+        cursor: pointer;
+        transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    }
 
-.container{
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    align-content: center;
-    flex-wrap: wrap;
-    margin: 3%
-}
-
-.container > div{
-    margin: 0.8rem;
-    padding: 0.5rem;
-    cursor: pointer;
-    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.3s ease-in-out, opacity 0.3s ease-in-out;
-}
-
-.container>div:hover{
-    
-    transform: scale(1.2);
-}
+    .container>div:hover{
+        
+        transform: scale(1.2);
+    }
 </style>

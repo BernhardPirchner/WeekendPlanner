@@ -3,7 +3,7 @@
     <eventModule v-if="!userStatus" :type="0" :user="this.userStatus"/>
     <div v-if="userStatus">
         <form>
-            <p>Choose which Events should be shown</p>
+            <p>Choose which Events should be shown:</p>
             <input type="radio" @click="show(1)" id="1" name="eventModule" checked="true">
             <label for="1">Show All Events</label><br>
             <input type="radio" @click="show(2)" id="2" name="eventModule">

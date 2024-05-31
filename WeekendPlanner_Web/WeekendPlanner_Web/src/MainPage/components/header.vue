@@ -89,12 +89,14 @@
         align-items: center;
         padding-left: 2%;
         padding-right: 2%;
+        margin-bottom: 2%;
     }
 
     .button{
         background-color: #FFEB3B;
-        border: none;
-        border: 1px solid black;
-        border-radius: 25%;
+    }
+
+    .headerContainer > h1{
+        text-decoration: underline;
     }
 </style>

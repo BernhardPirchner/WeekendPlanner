@@ -96,9 +96,9 @@ namespace WeekendPlanner_API.Controllers
 
             if(tmp is not null)
             {
-                Console.WriteLine(tmp.UserId);
+                //Console.WriteLine(tmp.UserId);
                 HttpContext.Session.SetString(sessionId, tmp.UserId);
-                Console.WriteLine(HttpContext.Session.GetString(sessionId));
+                //Console.WriteLine(HttpContext.Session.GetString(sessionId));
                 return Ok(new {message="Logged in successfully"});
             }
             else
@@ -208,6 +208,13 @@ namespace WeekendPlanner_API.Controllers
             {
                 return Unauthorized(new { message = "Unauthorized" });
             }
+        }
+
+        [HttpDelete("removeSavedGlobal")]
+        public async Task<IActionResult> RemoveSavedEventGlobally(string eventId)
+        {
+            await userService.RemoveSavedEventGlobally(eventId);
+            return Ok(new { message = $"Event {eventId} was removed on all Users" });
         }
     }
 }

@@ -14,9 +14,9 @@
         <div>
             <h1>{{ name }}</h1>
             <div v-if="this.userStatus">
-            <i v-if="!isSaved" @click="funcIsSaved" class="fi fi-rr-star"></i>
-            <i v-else @click="funcIsSaved" class="fi fi-sr-star"></i>
-        </div>
+                <i v-if="!isSaved" @click="funcIsSaved" class="fi fi-rr-star"></i>
+                <i v-else @click="funcIsSaved" class="fi fi-sr-star"></i>
+            </div>
         </div>
         <p>{{ description }}</p>
         <p>{{ newStart }} - {{ newEnd }}</p>

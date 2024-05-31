@@ -118,5 +118,14 @@ namespace WeekendPlanner_API.Services
         {
             await userCollection.DeleteOneAsync(userId);
         }
+
+        public async Task RemoveSavedEventGlobally(string eventId)
+        {
+            List<User> tmp=await userCollection.Find(_=>true).ToListAsync();
+            foreach(User user in tmp)
+            {
+                user.SavedEvents.Remove(eventId);
+            }
+        }
     }
 }

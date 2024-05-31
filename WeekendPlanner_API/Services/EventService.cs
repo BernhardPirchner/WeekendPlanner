@@ -1,6 +1,7 @@
 ﻿using MongoDB.Driver;
 using WeekendPlanner_API.Models;
 using Microsoft.Extensions.Options;
+using System.Diagnostics.Eventing.Reader;
 
 namespace WeekendPlanner_API.Services
 {
@@ -37,9 +38,25 @@ namespace WeekendPlanner_API.Services
         }
 
         public async Task CreateEvent(Event newEvent)
-        {
-
+        { 
             await eventCollection.InsertOneAsync(newEvent);
+        }
+
+        public async Task UpdateEvent(string eventId, Event newEvent)
+        {
+            var filter=Builders<Event>.Filter.Eq(e=>e.EventId, eventId);
+            var update = Builders<Event>.Update.Set(e => e.Name, newEvent.Name)
+                                             .Set(e => e.Description, newEvent.Description)
+                                             .Set(e => e.Start, newEvent.Start)
+                                             .Set(e => e.End, newEvent.End)
+                                             .Set(e => e.Location, newEvent.Location);
+
+            await eventCollection.UpdateOneAsync(filter, update);
+        }
+
+        public async Task DeleteEvent(string eventId)
+        {
+            await eventCollection.DeleteOneAsync(e=>e.EventId==eventId);
         }
     }
 }
