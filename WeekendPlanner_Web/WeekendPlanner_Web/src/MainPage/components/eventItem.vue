@@ -1,7 +1,7 @@
 <template>
     <div v-if="this.displayAll" id="itemSmall" class="event">
         <div v-if="this.userStatus">
-            <i v-if="!isSaved" @click="funcIsSaved" class="fi fi-rr-star"></i>
+            <i v-if="!this.isSaved" @click="funcIsSaved" class="fi fi-rr-star"></i>
             <i v-else @click="funcIsSaved" class="fi fi-sr-star"></i>
         </div>
         <div  @click="clicked">
@@ -14,7 +14,7 @@
         <div>
             <h1>{{ name }}</h1>
             <div v-if="this.userStatus">
-                <i v-if="!isSaved" @click="funcIsSaved" class="fi fi-rr-star"></i>
+                <i v-if="!this.isSaved" @click="funcIsSaved" class="fi fi-rr-star"></i>
                 <i v-else @click="funcIsSaved" class="fi fi-sr-star"></i>
             </div>
         </div>
@@ -60,13 +60,14 @@ import axios from 'axios';
             async funcIsSaved(){
                 try{
                     let response=null
-                    if (this.saved) {
-                        this.response=await axios.delete("https://localhost:7002/api/user/removeSavedEvent", {
+                    if (this.isSaved) {
+                        response=await axios.delete("https://localhost:7002/api/user/removeSavedEvent", {
                             params:{
                                 eventId:this.id
                             },
                             withCredentials:true
                         })
+                        console.log(this.saved +" "+response)
                     } else {
                         this.response=await axios.post("https://localhost:7002/api/user/addSavedEvent",null ,{
                             params:{
@@ -74,9 +75,9 @@ import axios from 'axios';
                             },
                             withCredentials:true
                         })
+                        console.log(this.saved +" "+response)
                     }
                     this.isSaved=!this.isSaved
-                    console.log(response)
                 }catch(error){
                     console.log(error)
                 }

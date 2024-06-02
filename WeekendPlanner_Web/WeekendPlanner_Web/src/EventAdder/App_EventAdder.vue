@@ -57,6 +57,7 @@
                 }catch(error){
                     console.log(error)
                 }
+                this.reset()
             },
             reset(){
                 this.eventName= "Event"

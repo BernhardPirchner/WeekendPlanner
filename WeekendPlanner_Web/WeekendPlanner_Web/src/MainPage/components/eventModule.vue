@@ -1,6 +1,6 @@
 <template class="body">    
     <div v-if="!data">
-        <h1>Error: Service could not be reached</h1>
+        <h1>Error: No Events</h1>
     </div>
     <div v-if="data && all" class="container">
         <eventItem v-for="x in data.data" v-bind:key=x.eventId :saved="x.saved" :userStatus="this.user" :displayAll="true" :id=x.eventId :name=x.name :description=x.description :start=localTime(x.start) :end="localTime(x.end)" :location="x.location" @clicked="selectEvent"/>
@@ -121,6 +121,16 @@ export default{
                 })
                 this.all=false
                 this.item=response.data
+
+                await this.fetchSaved()
+                console.log(this.data.data + "Heeello " + id)
+                this.data.data.forEach(element => {
+                    console.log(element.eventId)
+                    if(element.eventId===id){
+                        this.item["saved"]=true
+                    }
+                });
+
                 console.log(response)
             }catch(error){
                 console.log(error)

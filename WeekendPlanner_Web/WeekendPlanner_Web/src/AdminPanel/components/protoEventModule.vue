@@ -127,14 +127,31 @@ export default{
             return local.toISOString()
         },
         async publishItem(id){
-            const response= await axios.get("https://localhost:7002/api/protoEvent/oneProtoEvent",{
+            try{
+                const response= await axios.get("https://localhost:7002/api/protoEvent/oneProtoEvent",{
                 params:{
                     id:id
-                }
-            })
+                    }
+                })
+                console.log(response)
 
-            axios.post("https://localhost:7002/api/event/createEvent", response.data)
-            this.deleteItem(id)
+
+                const response2=await axios.delete("https://localhost:7002/api/protoEvent/deleteProtoEvent",{
+                    withCredentials:true,
+                    params:{
+                        id:id
+                    }})
+
+                    console.log(response2)
+
+                axios.post("https://localhost:7002/api/event/createEvent", response.data)
+                location.reload()
+            }catch(error){
+                console.log(error)
+            }
+
+
+
         }
     }
 };
