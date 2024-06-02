@@ -79,6 +79,7 @@ namespace WeekendPlanner_API.Services
             User tmp = await userCollection.FindAsync(user => user.UserId == userId).Result.FirstOrDefaultAsync();
             tmp.MyEvents.Remove(eventId);
             await UpdateUser(userId, tmp);
+            await RemoveSavedEventGlobally(eventId);
         }
 
         public async Task RemoveSavedEvent(string userId, string eventId)
@@ -97,7 +98,7 @@ namespace WeekendPlanner_API.Services
         public async Task<List<string>> GetSavedEvents(string userId)
         {
             User tmp = await userCollection.FindAsync(user => user.UserId == userId).Result.FirstOrDefaultAsync();
-            return tmp.SavedEvents;
+             return tmp.SavedEvents;
         }
 
         public async Task UpdateUser(string userId, User newUser)
@@ -117,6 +118,16 @@ namespace WeekendPlanner_API.Services
         public async Task DeleteUser(string userId)
         {
             await userCollection.DeleteOneAsync(userId);
+        }
+
+        public async Task RemoveSavedEventGlobally(string eventId)
+        {
+            List<User> tmp=await userCollection.Find(_=>true).ToListAsync();
+            foreach(User user in tmp)
+            {
+                user.SavedEvents.Remove(eventId);
+                await UpdateUser(user.UserId, user);
+            }
         }
     }
 }

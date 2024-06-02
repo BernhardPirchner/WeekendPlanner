@@ -1,21 +1,19 @@
 <template>
+    <div class="headerContainer">
+        <h1>Event Adder</h1>
+    </div>
+    <button  @click="home" class="button"><i class="fi fi-rr-arrow-left"></i> Back</button>
     <div class="container">
         <div class="item">
-            <h1>Add an Event:</h1>
             <form @submit.prevent="addEvent">
-                <p>Name: <input type="text" required v-model="eventName"></p>
-                <p>Description: <input type="text" required v-model="eventDescription" ></p>
-                <p>Start Date & Time: <input type="datetime-local" required v-model="eventStart"></p>
-                <p>End Date & Time <input type="datetime-local" required v-model="eventEnd"></p>
-                <p>Location: <input type="text" required v-model="eventLocation"></p>
-                <button type="submit">Add Event</button>
+                <p><i class="fi fi-rr-id-badge"></i> Name: <input type="text" required v-model="eventName"></p>
+                <p><i class="fi fi-rr-text"></i> Description: <textarea id="description" required v-model="eventDescription"></textarea></p>
+                <p><i class="fi fi-rr-calendar-clock"></i> Start Date & Time: <input type="datetime-local" required v-model="eventStart"></p>
+                <p><i class="fi fi-rr-calendar-clock"></i> End Date & Time <input type="datetime-local" required v-model="eventEnd"></p>
+                <p><i class="fi fi-rr-marker"></i> Location: <input type="text" required v-model="eventLocation"></p>
+                <button type="submit" class="button"><i class="fi fi-rr-plus"></i> Add</button>
             </form>
-            <button @click="home">return to Homepage</button>
             <p v-if="data">{{ data }}</p>
-        </div>
-        <div>
-            <h3>Preview</h3>
-            <eventItem :name="eventName" :description="eventDescription" :start="eventStart" :end="eventEnd" :location="eventLocation"/>
         </div>
     </div>
 </template>
@@ -26,11 +24,11 @@
     export default{
         data(){
             return {
-                eventName: null,
-                eventDescription: null,
+                eventName: "Event",
+                eventDescription: "Description of the Event",
                 eventStart: null,
                 eventEnd: null,
-                eventLocation:null,
+                eventLocation:"Location of the Event",
                 data:null
             }
         },
@@ -50,28 +48,23 @@
                         withCredentials:true
                     })
                     console.log(response)
-                    const response2=await axios.post('https://localhost:7002/api/user/addMyEvent',null,{
+                    const response2=await axios.post("https://localhost:7002/api/user/addMyEvent", null, {
+                        withCredentials:true,
                         params:{
-                            eventId:response.data.eventId
-                        },
-                        withCredentials:true
+                            eventId: response.data.eventId
+                        }
                     })
-
-                    console.log(response2)
                 }catch(error){
                     console.log(error)
                 }
-
-
-                this.reset();
+                this.reset()
             },
             reset(){
-                this.eventName=null
-                this.eventDescription=null
-                this.eventStart=null
-                this.eventEnd=null
-                this.evetnLocation=null
-                this.data=null
+                this.eventName= "Event"
+                this.eventDescription= "Description of the Event"
+                this.eventStart= null
+                this.eventEnd= null 
+                this.eventLocation="Location of the Event"
             },
             home(){
                 window.open("../../index.html", "_self")
@@ -86,9 +79,9 @@
         flex-direction: column;
         align-items: center;
         align-content: center;
-        border: 3px solid rgb(160, 92, 249);
+        border: 3px solid #D8BFD8;
         border-radius: 15%;
-        background-color: rgba(106, 54, 236, 0.325);
+        background-color: #98FF98 ;
         margin-left: 20%;
         margin-right: 20%;
         padding-bottom: 5%;
@@ -97,5 +90,23 @@
     .container{
         display: flex;
         flex-direction: column;
+    }
+
+    .button{
+        background-color: #FFEB3B; 
+    }
+
+    .headerContainer{
+        display: flex;
+        justify-content: space-between;
+        background-color:#FFB7C5;
+        align-items: center;
+        padding-left: 2%;
+        padding-right: 2%;
+        margin-bottom: 2%
+    }
+
+    .headerContainer > h1{
+        text-decoration: underline;
     }
 </style>

@@ -4,10 +4,10 @@
         <form v-if="!check" @submit.prevent="login">
             <p>E-Mail: <input type="email" required v-model="userEmail"></p>
             <p>Password: <input type="password" required v-model="userPassword"></p>
-            <button type="submit">Login</button>
+            <button type="submit" class="button">Login</button>
         </form>
         <p v-if="message">{{ message }}</p>
-        <button @click="change">Don't have an Account?</button>
+        <button @click="change" class="button">Don't have an Account?</button>
     </div>
 </template>
 
@@ -58,11 +58,15 @@
         display: flex;
         flex-direction: column;
         align-content: center;
-        border: 3px solid rgb(160, 92, 249);
+        border: 3px solid #D8BFD8 ;
         border-radius: 15%;
-        background-color: rgba(106, 54, 236, 0.325);
+        background-color: #98FF98;
         margin-left: 20%;
         margin-right: 20%;
         padding-bottom: 5%;
+    }
+
+    .button{
+        background-color: #FFEB3B;
     }
 </style>
