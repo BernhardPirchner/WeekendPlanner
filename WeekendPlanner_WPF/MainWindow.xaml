@@ -7,28 +7,24 @@
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf" x:Class="WeekendPlanner_WPF.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <Grid x:Name="MainGrid" Background="WhiteSmoke" Loaded="onLoad">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="15*"/>
-            <ColumnDefinition Width="60*"/>
-            <ColumnDefinition Width="15*"/>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="10*"/>
+            <RowDefinition Height="15*"/>
             <RowDefinition Height="70*"/>
-            <RowDefinition Height="20*"/>
+            <RowDefinition Height="5*"/>
         </Grid.RowDefinitions>
-
-        <Image Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Button Grid.Row="0" Grid.Column="2" Content="Login" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
-        
-
+        <StackPanel Margin="10" Background="#FFB7C5 ">
+            <Label Content="WeekendPlanner" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="25" FontFamily="Verdana" FontWeight="Bold"/>
+        </StackPanel>
+        <WrapPanel x:Name="wrapPanel" Grid.Row="1"/>
+        <Label Content="For more Features visit our Website!" HorizontalAlignment="Center" Grid.Row="3" VerticalAlignment="Center"/>
 
 
 
-      
+
+
     </Grid>
 </Window>

@@ -39,6 +39,8 @@ namespace WeekendPlanner_API
                 options.Cookie.SameSite=SameSiteMode.None;
                 options.Cookie.SecurePolicy=CookieSecurePolicy.Always;
             });
+
+            builder.Services.AddHealthChecks();
             
             builder.Services.AddCors(options =>
             {
@@ -61,7 +63,8 @@ namespace WeekendPlanner_API
             }
 
 
-            app.UseSession(); 
+            app.UseSession();
+            app.MapHealthChecks("/health");
             app.UseHttpsRedirection();
             app.UseCors();
             app.UseRouting();
